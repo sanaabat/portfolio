@@ -1,46 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sanaa • 3D Animator</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Portfolio website for a 3D animator and artist" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <title>Sanaa — 3D Animator </title>
+  <style>
+    :root{
+      --bg:#0a0a0a;           /* page background */
+      --panel:#111;           /* section panels */
+      --text:#f2f2f2;         /* primary text */
+      --muted:#b5b5b5;        /* muted text */
+      --accent:#7ee787;       /* accent (soft green) */
+      --accent-2:#89b4ff;     /* secondary accent */
+      --ring:#ffffff40;       /* focus ring */
+      --card:#151515;         /* cards */
+    }
+    /* Reset & base */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.5;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+    a{color:inherit;text-decoration:none}
+    a:focus-visible, button:focus-visible, [tabindex]:focus-visible{outline:3px solid var(--ring);outline-offset:2px;border-radius:14px}
+    img{max-width:100%;display:block}
+    .container{max-width:1200px;margin-inline:auto;padding:0 20px}
+
+    /* Top nav */
+    .nav{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter:saturate(1.2) blur(6px);
+      background:linear-gradient(to bottom, #0a0a0acc, #0a0a0a00);
+      border-bottom:1px solid #ffffff12;
+    }
+    .nav .row{display:flex;align-items:center;justify-content:space-between;padding:14px 20px}
+    .brand{display:flex;align-items:center;gap:.6rem;font-weight:700;letter-spacing:.3px}
+    .brand .dot{width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 30% 30%, var(--accent-2), #5b7cff 60%, transparent 70%)}
+    .links{display:flex;gap:1.2rem;align-items:center}
+    .links a{color:var(--muted);font-weight:600}
+    .links a:hover{color:var(--text)}
+    .menu-btn{display:none;background:none;border:0;color:var(--text);font-size:1.1rem}
+
+    @media (max-width: 760px){
+      .menu-btn{display:block}
+      .links{display:none}
+      .links.open{display:flex;flex-direction:column;position:absolute;left:0;right:0;top:58px;padding:14px 20px;background:#0a0a0ef9;border-bottom:1px solid #ffffff1a}
+    }
+
+    /* Hero */
+    .hero{
+      position:relative;min-height:92vh;display:grid;place-items:center;border-bottom:1px solid #ffffff12;overflow:hidden;
+      background: radial-gradient(1200px 800px at 80% -10%, #4b5563 0%, transparent 60%),
+                  radial-gradient(1000px 700px at -10% 20%, #2563eb33 0%, transparent 60%),
+                  linear-gradient(180deg, #0d0d0d 0%, #0a0a0a 100%);
+      isolation:isolate;
+    }
+    .hero::after{content:"";position:absolute;inset:-10% -20%;background:conic-gradient(from 180deg at 50% 50%, #7ee78711, #89b4ff11, #f59e0b10, #7ee78711);filter:blur(60px);opacity:.8;z-index:-1;animation:spin 24s linear infinite}
+    @media (prefers-reduced-motion: reduce){.hero::after{animation:none}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .hero-inner{display:grid;gap:16px;text-align:center;padding:40px}
+    .eyebrow{color:var(--accent);font-weight:700;letter-spacing:.25em;text-transform:uppercase;font-size:.8rem}
+    h1{margin:0;font-size: clamp(36px, 6vw, 72px);line-height:1.05;letter-spacing:-0.02em}
+    .sub{color:var(--muted);max-width:720px;margin-inline:auto;font-size: clamp(16px, 2.2vw, 20px)}
+    .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:12px 18px;border-radius:16px;font-weight:700;border:1px solid #ffffff24;background:linear-gradient(180deg,#141414,#0f0f0f);box-shadow:0 0 0 1px #ffffff0a inset}
+    .btn:hover{border-color:#ffffff55}
+    .btn.primary{background:linear-gradient(180deg,#1a1f1a,#131713);border-color:#7ee78755}
+
+    /* Section wrappers */
+    section{padding:70px 0;border-bottom:1px solid #ffffff12}
+    section .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:22px}
+    .kicker{letter-spacing:.3em;text-transform:uppercase;color:var(--muted);font-weight:700;font-size:.78rem}
+    h2{margin:0;font-size: clamp(28px, 4vw, 44px);letter-spacing:-.01em}
+
+    /* Work grid */
+    .grid{display:grid;gap:16px}
+    @media (min-width: 700px){.grid{grid-template-columns:repeat(12,1fr)}}
+    .card{grid-column: span 12;background:var(--card);border:1px solid #ffffff14;border-radius:22px;overflow:hidden;display:flex;flex-direction:column}
+    @media (min-width: 700px){.card.span-6{grid-column: span 6}}
+    .thumb{aspect-ratio:16/9;position:relative;background:linear-gradient(135deg,#272727, #141414);display:grid;place-items:center}
+    .tag-row{position:absolute;left:12px;top:12px;display:flex;gap:6px}
+    .tag{font-size:.72rem;padding:6px 10px;border-radius:999px;background:#00000080;border:1px solid #ffffff26;color:#d8fddf}
+    .play{position:absolute;inset:auto;bottom:12px;left:12px;padding:8px 12px;border-radius:12px;background:#000000a6;border:1px solid #ffffff2b}
+    .card-body{padding:16px 16px 18px}
+    .card-title{font-weight:800;margin:0 0 6px}
+    .muted{color:var(--muted)}
+
+    /* Reel */
+    .reel{display:grid;gap:18px}
+    .reel video{width:100%;max-width:1100px;border-radius:22px;border:1px solid #ffffff1a;background:#111;box-shadow:0 10px 60px #00000066}
+    .reel-note{color:var(--muted);font-size:.95rem}
+
+    /* About & Services */
+    .about{display:grid;gap:24px}
+    @media (min-width:900px){.about{grid-template-columns: 1.15fr .85fr;align-items:start}}
+    .panel{background:var(--panel);border:1px solid #ffffff12;border-radius:22px;padding:22px}
+    .list{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+    .list li{display:flex;gap:10px;align-items:center}
+    .dot-ok{width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 30% 30%, var(--accent), #2ea043 60%, #0000 70%)}
+
+    /* Contact */
+    .contact .row{display:grid;gap:16px}
+    @media (min-width:760px){.contact .row{grid-template-columns: 1fr 1fr}}
+    .card-link{display:inline-flex;align-items:center;gap:.6rem;padding:12px 14px;border-radius:14px;background:#101010;border:1px solid #ffffff1a}
+    .card-link:hover{border-color:#ffffff40}
+
+    /* Footer */
+    .footer{padding:28px 0;text-align:center;color:var(--muted)}
+    .social{display:flex;justify-content:center;gap:12px;margin-top:10px}
+    .icon{width:22px;height:22px;display:inline-block}
+  </style>
 </head>
 <body>
-  <header class="hero">
-    <h1>Your Latest Animation</h1>
-    <a href="#portfolio" class="cta">View Portfolio ⟶</a>
+  <!--
+    ✅ HOW TO USE
+    1) Save this file as index.html in your GitHub Pages repo: username.github.io
+    2) Replace text with your details. Drop your reel as reel.mp4 next to this file.
+    3) Replace placeholder project cards with your thumbnails or video links.
+  -->
+
+  <nav class="nav" aria-label="Top Navigation">
+    <div class="row container">
+      <a class="brand" href="#home" aria-label="Home">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Your Name</span>
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">☰</button>
+      <div class="links" id="navLinks">
+        <a href="#work">Work</a>
+        <a href="#reel">Reel</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <header id="home" class="hero" role="banner">
+    <div class="hero-inner container">
+      <div class="eyebrow">3D Animator • Artist</div>
+      <h1>Bold visuals, grounded storytelling.</h1>
+      <p class="sub">Character animation, cinematics, and motion design for film, games, and immersive experiences. I build worlds that feel lived‑in and performances that feel true.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="#reel">▶ Watch Reel</a>
+        <a class="btn" href="#work">View Work</a>
+      </div>
+    </div>
   </header>
 
-  <section id="portfolio" class="portfolio">
-    <h2>My Work</h2>
-    <div class="grid">
-      <!-- Repeat per project -->
-      <div class="item">
-        <img src="thumb1.jpg" alt="Project 1" />
-      </div>
-      <!-- ... -->
-    </div>
-  </section>
+  <main>
+    <section id="work" aria-labelledby="work-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">Selected Work</div>
+            <h2 id="work-title">Recent Projects</h2>
+          </div>
+          <a class="card-link" href="#">All projects →</a>
+        </div>
 
-  <section id="about" class="about">
-    <h2>About Me</h2>
-    <p>Brief bio or artist statement.</p>
-  </section>
+        <div class="grid">
+          <!-- Card 1 -->
+          <article class="card span-6">
+            <div class="thumb" role="img" aria-label="Creature Animation">
+              <div class="tag-row">
+                <span class="tag">Animation</span><span class="tag">Creature</span>
+              </div>
+              <a class="play" href="#" aria-label="Play clip">▶ Play</a>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Deep Rift • Creature Test</h3>
+              <p class="muted">Maya, Ziva, Arnold — body mechanics and weight in a hostile environment.</p>
+            </div>
+          </article>
 
-  <section id="contact" class="contact">
-    <h2>Contact </h2>
-    <form action="#" method="POST">
-      <input type="email" placeholder="Your Email" required />
-      <button type="submit">Sign Up</button>
-    </form>
-  </section>
+          <!-- Card 2 -->
+          <article class="card span-6">
+            <div class="thumb" role="img" aria-label="Cinematic Lighting">
+              <div class="tag-row">
+                <span class="tag">Lighting</span><span class="tag">LookDev</span>
+              </div>
+              <a class="play" href="#" aria-label="Play clip">▶ Play</a>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Midnight Alley • Mood Pass</h3>
+              <p class="muted">Houdini, Redshift — neon noir palette and volumetric depth.</p>
+            </div>
+          </article>
 
-  <footer class="footer">
-    <p>© 2025 </p>
-    <div class="social">
-      <!-- social links -->
-    </div>
-  </footer>
-</body>
-</html>
+          <!-- Card 3 -->
+          <article class="card span-6">
+            <div class="thumb" role="img" aria-label="Stylized FX">
+              <div class="tag-row">
+                <span class="tag">FX</span><span class="tag">Stylized</span>
+              </div>
+              <a class="play" href="#" aria-label="Play clip">▶ Play</a>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Photon Dash • Energy Trails</h3>
+              <p class="muted">Niagara, Unreal — expressive motion language for a runner.</p>
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="card span-6">
+            <div class="thumb" role="img" aria-label="Facial Acting">
+              <div class="tag-row">
+                <span class="tag">Acting</span><span class="tag">Facial</span>
+              </div>
+              <a class="play" href="#" aria-label="Play clip">▶ Play</a>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Kitchen Table • Subtle Performance</h3>
+              <p class="muted">Mocap cleanup + hand‑key blend;
